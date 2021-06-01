@@ -46,7 +46,87 @@ var saveTasks = function() {
 };
 
 
+$(".list-group").on("click", "p", function() {
+    $(".list-group").on("blur", "textarea", function() {
+      var text = $(this)
+        .val()
+        .trim();
 
+      var status = $(this)
+        .closest(".list-group")
+        .attr("id")
+        .replace("list-", "");
+
+      var index = $(this)
+        .closest(".list-group-item")
+        .index();
+
+        tasks[status][index].text = text;
+        saveTasks();  
+
+        var taskP = $("<p>")
+          .addClass("m-1")
+          .text(text);
+
+       $(this).replaceWith(taskP);
+    })
+    var text = $(this)
+    var textInput = $("<textarea>")
+    $(this).replaceWith(textInput)
+    textInput.trigger("focus")
+    .addClass("form-control")
+    .val(text)
+    .text()
+    .trim();
+});
+
+// due date was clicked
+$(".list-group").on("click", "span", function() {
+  // value of date was changed
+  $(".list-group").on("blur", "input[type='text']", function() {
+    //get current text
+    var date = $(this)
+    .val()
+    .trim();
+
+    //get the parent ul's id attribute
+    var status = $(this)
+    .closest(".list-group")
+    .attr("id")
+    .replace("list-", "");
+
+    //get the tasks position in the list of other li elements
+    var index = $(this)
+    .closest(".list-group-item")
+    .index();
+
+    // update task in arra and re-save to localStorage
+    tasks[status][index].date = date;
+    saveTasks();
+
+    // replace input with span element
+    $(this).replaceWith(taskSpan);
+  });
+
+  
+  // get current text
+  var date = $(this)
+    .text()
+    .trim();
+
+  // create new input element
+  var dateInput = $("<input>")
+  .attr("type", "text")
+  .addClass("form-control")
+  .val(date);
+
+  // swap out elements
+  $(this).replaceWith(dateInput);
+
+  // automatically focus on new element
+  dateInput.trigger("focus");
+
+});
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
